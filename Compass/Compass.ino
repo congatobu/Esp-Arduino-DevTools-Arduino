@@ -12,22 +12,28 @@ SoftwareSerial bluetooth(RX_PIN, TX_PIN);
 long send_data_time_out = 1000;
 long send_data_time = 0;
 
+long read_compass_sensor_time = 0;
+long read_compass_sensor_time_out = 300;
+
 void setup() {
-  // put your setup code here, to run once:
+  Wire.begin();
   Serial.begin(9600);
   while (!Serial) {}
 
-
   bluetooth.begin(9600);
 
+  compass.init();
+  compass.setSamplingRate(50);
 
+  Serial.println("QMC5883L Compass Demo");
+	Serial.println("Turn compass in all directions to calibrate....");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
   if (bluetooth.available()>0) {
-    String data = bluetooth.readString();
+    String data = bluetooth.readStringUntil('\n');
     Serial.println(data);
   }
 
@@ -38,6 +44,13 @@ void loop() {
     //Serial.println("gui du lieu");
   }
 
- 
+  if(millis() >= read_compass_sensor_time + read_compass_sensor_time_out)
+  {
+   // read_compass_sensor_time = read_compass_sensor_time + read_compass_sensor_time_out;
+   // int heading = compass.readHeading();
+  //  Serial.println(heading);
+    //send data
+    //bluetooth.println(heading);
 
+  }
 }
