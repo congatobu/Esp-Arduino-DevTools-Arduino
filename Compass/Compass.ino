@@ -26,31 +26,34 @@ void setup() {
   compass.setSamplingRate(50);
 
   Serial.println("QMC5883L Compass Demo");
-	Serial.println("Turn compass in all directions to calibrate....");
+  Serial.println("Turn compass in all directions to calibrate....");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
 
-  if (bluetooth.available()>0) {
+  if (bluetooth.available() > 0) {
     String data = bluetooth.readStringUntil('\n');
-    Serial.println(data);
+    //Serial.println(data);
+
+    String cmd = data.substring(0,2);
+    String value = data.substring(3,data.length());
+
+    Serial.print(cmd);Serial.print("-");Serial.println(value);
   }
 
   if (millis() >= send_data_time + send_data_time_out) {
     send_data_time = send_data_time + send_data_time_out;
-   // bluetooth.println("gui du lieu");
+    // bluetooth.println("gui du lieu");
     //bluetooth.flush();
     //Serial.println("gui du lieu");
   }
 
-  if(millis() >= read_compass_sensor_time + read_compass_sensor_time_out)
-  {
-   // read_compass_sensor_time = read_compass_sensor_time + read_compass_sensor_time_out;
-   // int heading = compass.readHeading();
-  //  Serial.println(heading);
+  if (millis() >= read_compass_sensor_time + read_compass_sensor_time_out) {
+    read_compass_sensor_time = read_compass_sensor_time + read_compass_sensor_time_out;
+    int heading = compass.readHeading();
+    Serial.println(heading);
     //send data
-    //bluetooth.println(heading);
-
+    bluetooth.println(heading);
   }
 }
