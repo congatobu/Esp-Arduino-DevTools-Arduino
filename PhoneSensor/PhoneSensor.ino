@@ -27,16 +27,21 @@ void loop() {
 
   if (bluetooth.available()>0) {
     String data = bluetooth.readStringUntil('\n');
-    Serial.println(data);
+    //Serial.println(data);
+
+    String cmd = data.substring(0,2);
+    String value = data.substring(3,data.length());
+
+    Serial.print(cmd);Serial.print("-");Serial.println(value);
+
   }
 
   if (millis() >= send_data_time + send_data_time_out) {
     send_data_time = send_data_time + send_data_time_out;
 
-    randomNumber = random(100);    
-    bluetooth.println(randomNumber);
-    
-    Serial.print("send: ");Serial.println(randomNumber);
+   // randomNumber = random(100);    
+   // bluetooth.println(randomNumber);
+   // Serial.print("send: ");Serial.println(randomNumber);
 
   }
 
