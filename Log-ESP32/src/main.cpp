@@ -20,10 +20,6 @@ void setup()
   bluetoothSerial.begin("ESP32-BT");
   Serial.println("Bluetooth SPP start...");
   delay(5000);
-
- 
-  
-
   xTaskCreatePinnedToCore(TaskSendData, "Send Data ", 2000, NULL, 1, NULL, 1);
 }
 
@@ -36,11 +32,6 @@ void loop()
     Serial.println(data);
   }
 
-  if (bluetoothSerial.available()> 0)
-  {
-    char incomingChar = bluetoothSerial.read();
-    Serial.write(incomingChar); // In dữ liệu nhận được ra Serial Monitor
-  }
 
   if (Serial.available())
   {
