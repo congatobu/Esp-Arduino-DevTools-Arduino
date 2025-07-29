@@ -7,11 +7,9 @@
 
 SoftwareSerial bluetooth(RX_PIN, TX_PIN);
 
-long send_data_time_out = 500;
-long send_data_time = 0;
+const int led_pin = 9;
 
 //---------------------------------------
-long randomNumber;
 
 void setup() {
   Wire.begin();
@@ -25,24 +23,18 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
   bluetooth_controller();
-
-  if (millis() >= send_data_time + send_data_time_out) {
-    send_data_time = send_data_time + send_data_time_out;
-  }
-
 }
 
 
 
 void bluetooth_controller() {
   if (bluetooth.available() > 0) {
-    
+
     String bluetooth_receiver = bluetooth.readStringUntil('\n');
-    
+
     JsonDocument document;
-    
+
     DeserializationError error = deserializeJson(document, bluetooth_receiver);
 
     if (error) {
@@ -50,9 +42,17 @@ void bluetooth_controller() {
       return;
     }
 
-    String command = document["cmd"];
-
+    String cmd = document["cmd"].as<String>();
     
+    int brightness = document["data"].as<int>();
+
+    if (cmd == "LIGHT") {
+      brightness = constrain(brightness, 0, 255);
+      analogWrite(led_pin, brightness);
+    } else if (cmd == "OFF") {
+      analogWrite(led_pin, 0);
+    } 
+
     Serial.println(bluetooth_receiver);
   }
 }

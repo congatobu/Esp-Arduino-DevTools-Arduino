@@ -6,8 +6,7 @@
 
 SoftwareSerial bluetooth(RX_PIN, TX_PIN);
 
-long send_data_time_out = 1000;
-long send_data_time = 0;
+const int ledPin = 9;
 
 //---------------------------------------
 long randomNumber;
@@ -18,22 +17,19 @@ void setup() {
   while (!Serial) {}
 
   bluetooth.begin(9600);
-  randomSeed(analogRead(0));
+  pinMode(ledPin, OUTPUT); 
+
 	Serial.println("Init done ...");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  
   if (bluetooth.available()>0) {
     String data = bluetooth.readStringUntil('\n');
     Serial.println(data);
+    digitalWrite(ledPin, HIGH); 
+    delay(100);
   }
-
-  if (millis() >= send_data_time + send_data_time_out) {
-    send_data_time = send_data_time + send_data_time_out;
-   // randomNumber = random(100);    
-   // bluetooth.println(randomNumber);
-   // Serial.print("send: ");Serial.println(randomNumber);
-  }
+  digitalWrite(ledPin, LOW);  
 }
