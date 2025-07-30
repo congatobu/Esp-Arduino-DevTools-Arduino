@@ -42,13 +42,6 @@ void loop() {
     Serial.print(cmd);Serial.print("-");Serial.println(value);
   }
 
-  if (millis() >= send_data_time + send_data_time_out) {
-    send_data_time = send_data_time + send_data_time_out;
-    // bluetooth.println("gui du lieu");
-    //bluetooth.flush();
-    //Serial.println("gui du lieu");
-  }
-
   if (millis() >= read_compass_sensor_time + read_compass_sensor_time_out) {
     read_compass_sensor_time = read_compass_sensor_time + read_compass_sensor_time_out;
     int heading = compass.readHeading();
