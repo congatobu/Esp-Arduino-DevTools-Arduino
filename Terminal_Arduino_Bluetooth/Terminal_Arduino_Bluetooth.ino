@@ -51,8 +51,10 @@ void handleCommand(String command) {
     bluetooth.print("{\"status\":\"LED ");
     bluetooth.print(state == HIGH ? "ON" : "OFF");
     bluetooth.println("\"}");
-  } else if (command.startsWith("SET ")) {
-    int brightness = command.substring(4).toInt();
+  } else if (command.substring(0, 3).equalsIgnoreCase("SET")) {
+    String valueStr = command.substring(3);
+    valueStr.trim();  // Loại bỏ khoảng trắng dư
+    int brightness = valueStr.toInt();
     brightness = constrain(brightness, 0, 255);
     analogWrite(ledPin, brightness);
     bluetooth.print("{\"brightness\":");

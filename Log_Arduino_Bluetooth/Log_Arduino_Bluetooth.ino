@@ -28,6 +28,7 @@ void loop() {
   if (bluetooth.available()>0) {
     String data = bluetooth.readStringUntil('\n');
     Serial.println(data);
+    bluetooth.println(data);
   }
 
   if (millis() >= send_data_time + send_data_time_out) {
